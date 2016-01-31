@@ -1,0 +1,106 @@
+---
+title       : Binomial Simluator
+subtitle    : Demonstration of Central Limit Theorem
+author      : Jonah Wong
+job         : Developing Data Products Course Project
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Slide 1
+
+The central limit theorem states that the distribution of the mean of a large number of independent, identically distributed variables will be approximately normal, regardless of underlying distribution of the variables.
+
+```{r, echo=FALSE}
+x<-seq(-4,4,length=200)
+y<-dnorm(x,mean=0, sd=1)
+plot(x,y, type = "l", lwd = 2, axes = FALSE, xlab = "", ylab = "")
+axis(1, at = -3:3)
+```
+
+--- 
+
+## Slide 2
+
+The Binomial Simulator (http://github.com/wongjo/data-products) generates a large number of independent, identically distributed variables, so will be approximately normal when the number of trials and observations is large.
+
+```{r, echo=FALSE}
+set.seed(1)
+b1<-rbinom(10,10,0.5)
+b2<-rbinom(100,100,0.5)
+b3<-rbinom(1000,1000,0.5)
+xlabels1 <- paste("Observed Successes, mean =", round(mean(b1),1),", standard deviation = ", round(sd(b1),1))
+xlabels2 <- paste("Observed Successes, mean =", round(mean(b2),1),", standard deviation = ", round(sd(b2),1))
+xlabels3 <- paste("Observed Successes, mean =", round(mean(b3),1),", standard deviation = ", round(sd(b3),1))
+
+x1 <- seq(min(b1-20), max(b1+20), length.out=10+1)
+x2 <- seq(min(b2-20), max(b2+20), length.out=50+1)
+x3 <- seq(min(b3-20), max(b3+20), length.out=50+1)
+par(mfrow=c(1,3)) 
+hist(b1,breaks=x1, col="white",main="Histogram of B(10,10,0.5)", xlab=xlabels1)
+hist(b2,breaks=x2, col="white",main="Histogram of B(100,100,0.5)", xlab=xlabels2)
+hist(b3,breaks=x3, col="white",main="Histogram of B(1000,1000,0.5)", xlab=xlabels3)
+
+```
+
+--- 
+
+## Slide 3
+
+The Binomial Simulator will allow the user to explore the parameters of the binomial random number generator and large numbers of trials and observations will approach the normal distribution, and can be compared to the normal curve with the overlay display.
+```{r, echo=FALSE}
+
+set.seed(1)
+b3<-rbinom(1000,1000,0.5)
+xlabels3 <- paste("Observed Successes, mean =", round(mean(b3),1),", standard deviation = ", round(sd(b3),1))
+
+x3 <- seq(min(b3-20), max(b3+20), length.out=50+1)
+h<-hist(b3,breaks=x3, col="white",main="Histogram of B(1000,1000,0.5)", xlab=xlabels3)
+multiplier <- h$counts / h$density
+NonNANindex <- which(!is.nan(multiplier))
+firstNonNAN <- min(NonNANindex)
+myx <- seq(min(b3)-30, max(b3)+30, length.out= 200)
+normal <- dnorm(x = myx, mean = mean(b3), sd = sd(b3))
+lines(myx, normal * multiplier[firstNonNAN], col = "black", lwd = 2)
+plot(h)
+
+```
+
+--- 
+
+## Slide 4
+
+Other Customizable options are available
+
+
+
+
+
+```{r, echo=FALSE}
+
+set.seed(1)
+b3<-rbinom(1000,1000,0.5)
+xlabels3 <- paste("Observed Successes, mean =", round(mean(b3),1),", standard deviation = ", round(sd(b3),1))
+
+x3 <- seq(min(b3-20), max(b3+20), length.out=50+1)
+h<-hist(b3,breaks=x3, col="orange",main="Histogram of B(1000,1000,0.5)", xlab=xlabels3)
+multiplier <- h$counts / h$density
+NonNANindex <- which(!is.nan(multiplier))
+firstNonNAN <- min(NonNANindex)
+myx <- seq(min(b3)-30, max(b3)+30, length.out= 200)
+normal <- dnorm(x = myx, mean = mean(b3), sd = sd(b3))
+lines(myx, normal * multiplier[firstNonNAN], col = "blue", lwd = 2)
+plot(h)
+
+```
+
+--- 
+
+## Slide 5
+
+The Binomial Simulator is a valuable tool for students of probabilty and statistics.
+
